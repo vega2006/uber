@@ -175,3 +175,108 @@ curl -X GET http://localhost:4000/users/logout \
   "message": "Unauthorized"
 }
 ```
+
+## POST /partners/register
+
+### Description
+This endpoint is used to register a new partner.
+
+### Request Body
+The request body should be a JSON object with the following fields:
+- `fullName`: An object containing:
+  - `firstName`: A string with a minimum length of 3 characters.
+  - `lastName`: A string with a minimum length of 3 characters (optional).
+- `email`: A string representing the partner's email. It must be a valid email address.
+- `password`: A string with a minimum length of 5 characters.
+- `vehicle`: An object containing:
+  - `color`: A string representing the vehicle's color.
+  - `plate`: A string representing the vehicle's plate number.
+  - `capacity`: A number representing the vehicle's capacity.
+  - `type`: A string representing the vehicle's type.
+
+Example:
+```json
+{
+  "fullName": {
+    "firstName": "Jane",
+    "lastName": "Doe"
+  },
+  "email": "jane.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "type": "sedan"
+  }
+}
+```
+
+### Response Body
+
+- `partner` :
+    - `fullName`: :
+        - `firstName`: A string with a minimum length of 3 characters.
+        - `lastName`: A string with a minimum length of 3 characters (optional).
+    - `email`: A string representing the partner's email. It must be a valid email address.
+    - `vehicle`: :
+        - `color`: A string representing the vehicle's color.
+        - `plate`: A string representing the vehicle's plate number.
+        - `capacity`: A number representing the vehicle's capacity.
+        - `type`: A string representing the vehicle's type.
+- `token` :
+    - `JWT token (String)`
+
+### Example Request
+```sh
+curl -X POST http://localhost:4000/partners/register \
+-H "Content-Type: application/json" \
+-d '{
+  "fullName": {
+    "firstName": "Jane",
+    "lastName": "Doe"
+  },
+  "email": "jane.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "type": "sedan"
+  }
+}'
+```
+
+### Example Response
+```json
+{
+  "token": "jwt_token",
+  "partner": {
+    "_id": "partner_id",
+    "fullName": {
+      "firstName": "Jane",
+      "lastName": "Doe"
+    },
+    "email": "jane.doe@example.com",
+    "vehicle": {
+      "color": "red",
+      "plate": "ABC123",
+      "capacity": 4,
+      "type": "sedan"
+    }
+  }
+}
+```
+
+### Error Response
+```json
+{
+  "errors": [
+    {
+      "msg": "Invalid email",
+      "param": "email",
+      "location": "body"
+    }
+  ]
+}
+```
